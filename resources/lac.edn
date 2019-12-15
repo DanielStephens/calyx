@@ -1,0 +1,35 @@
+{
+ :enums
+ {:episode
+  {:description "The episodes of the original Star Wars trilogy."
+   :values [:NEWHOPE :EMPIRE :JEDI]}}
+
+ :objects
+ {:droid
+  {:fields {:primary_functions {:type (list String)}
+            :id {:type Int}
+            :name {:type String}
+            :appears_in {:type (list :episode)}}}
+
+  :human
+  {:fields {:id {:type Int :column "id_col"}
+            :name {:type String}
+            :visited {:args {:size {:type Int}}
+                      :type :planetConnection
+                      :join [:id = "human_id" "planet_visits" "planet_id" = :id]
+                      :where :visited-where}
+            :home_planet {:type :planet :join [:id => :id]}
+            :appears_in {:type (list :episode)}}}
+  :planet
+  {:fields {:id {:type Int}
+            :name {:type String}
+            :size {:type Int}}}}
+
+ :queries
+ {:hero {:type (non-null :human)
+         :args {:episode {:type :episode}}
+         :where :hero-where}
+  :droid {:type :droid
+          :args {:id {:type String :default-value "2001"}}
+          :resolve :get-droid}}
+ }

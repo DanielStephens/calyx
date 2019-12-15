@@ -1,0 +1,31 @@
+type PageInfo {
+  # Forward pagination
+  hasNextPage: Boolean!
+  endCursor: String
+
+  # Backward pagination
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+enum OrderingDirection { ASC, DESC }
+
+interface Node {
+  id: ID!
+}
+
+type Human implements Node {
+  id: ID!
+  name: String!
+  homePlanet: String!
+  appearsIn: [String]!
+}
+
+type Query {
+  heroes(name: String): [Human]
+  node(id: ID!): Node
+}
+
+schema {
+  query: Query
+}
