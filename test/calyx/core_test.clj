@@ -74,7 +74,7 @@
                                      "name" "daniel"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :response))))
 
     (testing "backwards paging"
@@ -98,7 +98,7 @@
                                      "name" "charlie"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :response))))
 
     (testing "forward query"
@@ -115,7 +115,7 @@
                     :AccountConnection
                     nil
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :sql-string
                     :sql-args))))
 
@@ -133,7 +133,7 @@
                     :AccountConnection
                     nil
                     {}
-                    {:last 2}
+                    {"last" 2}
                     :sql-string
                     :sql-args))))
 
@@ -153,7 +153,7 @@
                     :AccountConnection
                     nil
                     {}
-                    {:last 2}
+                    {"last" 2}
                     :sql-string
                     :sql-args))))
 
@@ -172,8 +172,8 @@
                     :AccountConnection
                     nil
                     {}
-                    {:first 2
-                     :after "{\"name\":\"beatrice\",\"id\":\"1\"}"}
+                    {"first" 2
+                     "after" "{\"name\":\"beatrice\",\"id\":\"1\"}"}
                     :sql-string
                     :sql-args))))
 
@@ -192,8 +192,8 @@
                     :AccountConnection
                     nil
                     {}
-                    {:first 2
-                     :after "{\"name do my hack\":\"beatrice\",\"id\":\"1\"}"} ; hacks in the cursor :O
+                    {"first" 2
+                     "after" "{\"name do my hack\":\"beatrice\",\"id\":\"1\"}"} ; hacks in the cursor :O
                     :sql-string
                     :sql-args))))))
 
@@ -221,7 +221,7 @@
                                      "name" "beatrice"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :sql-string
                     :sql-args))))
 
@@ -236,7 +236,7 @@
                                      "name" "beatrice"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :response))))
 
     (testing "previous thing found"
@@ -251,7 +251,7 @@
                                      "name" "beatrice"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :response))))
 
     (testing "multiple things found"
@@ -266,7 +266,7 @@
                                                     "name" "charlie"}]
                                                   nil)
                                    {}
-                                   {:first 2}))))))
+                                   {"first" 2}))))))
 
 (deftest table-node
   (let [calyx-schema {:Account {:table "account"
@@ -292,7 +292,7 @@
                                      "name" "beatrice"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :sql-string
                     :sql-args))))
 
@@ -306,7 +306,7 @@
                                      "name" "beatrice"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :response))))
 
     (testing "previous thing found"
@@ -320,7 +320,7 @@
                                      "name" "beatrice"}]
                                    nil)
                     {}
-                    {:first 2}
+                    {"first" 2}
                     :response))))
 
     (testing "multiple things found"
@@ -335,4 +335,4 @@
                                                     "name" "charlie"}]
                                                   nil)
                                    {}
-                                   {:first 2}))))))
+                                   {"first" 2}))))))

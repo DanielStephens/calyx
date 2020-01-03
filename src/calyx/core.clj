@@ -165,11 +165,21 @@
             (-> type-schema :type vector?) (update :type (comp paged first))
 
             (and (-> type-schema :type some?)
-                 (-> type-schema :type keyword? not))
+                 (-> type-schema :type keyword? not)
+                 (-> type-schema :type vector? not))
             (do (throw (ex-info "reference type was not understood." {:schema-type type
                                                                       :schema type-schema})))
 
             (= :type t) fillout-type-schema)))
+
+(def is-special-arg?
+  (comp #{"filter"
+          "orderBy"
+          "first"
+          "last"
+          "before"
+          "after"}
+        first))
 
 (defn- make-explicit
   [schema]
@@ -189,7 +199,7 @@
                                                                      :forward (fn [_ctx args parent]
                                                                                 (concat (when (map? parent) (into [] parent))
                                                                                         args
-                                                                                        [[::count 1]]))
+                                                                                        [[:count 1]]))
                                                                      :resolver (fn [_ctx _args {edges :edges
                                                                                                 page-info :pageInfo}]
                                                                                  (if (:hasNextPage page-info)
@@ -198,7 +208,14 @@
                                              (calyx-one-type type) {:type (calyx-edge-type type)
                                                                     :resolver (fn [_ctx _args edge] (:node edge))}
 
-                                             (connection-type type) {:type (calyx-connection-type type)}
+                                             (connection-type type) {:type (calyx-connection-type type)
+                                                                     :forward (fn [_ctx args parent]
+                                                                                (concat (when (map? parent) (into [] parent))
+                                                                                        (->> args
+                                                                                             (remove is-special-arg?))
+                                                                                        (->> args
+                                                                                             (filter is-special-arg?)
+                                                                                             (map (fn [[k v]] [(keyword k) v])))))}
                                              (edge-type type) {:type (calyx-edge-type type)}
                                              (many-type type) {:type (calyx-many-type type)}}
 
@@ -315,7 +332,7 @@
             args-v (into [] args)
 
             default-count 50
-            forward-count (some args-m [::count
+            forward-count (some args-m [:count
                                         :first])
             backward-count (:last args-m)
             limit (or forward-count backward-count default-count)
